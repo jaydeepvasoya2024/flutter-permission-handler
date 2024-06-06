@@ -19,7 +19,7 @@ PermissionHandlerPlatform get _handler => PermissionHandlerPlatform.instance;
 /// Opens the app settings page.
 ///
 /// Returns [true] if the app settings page could be opened, otherwise [false].
-Future<bool> openAppSettings() => _handler.openAppSettings();
+Future<bool> openAppSettings() async => await _handler.openAppSettings();
 
 /// Actions that can be executed on a permission.
 extension PermissionActions on Permission {
@@ -105,8 +105,7 @@ extension PermissionActions on Permission {
   ///
   /// Returns the new [PermissionStatus].
   Future<PermissionStatus> request() async {
-    final permissionStatus =
-        (await [this].request())[this] ?? PermissionStatus.denied;
+    final permissionStatus = (await [this].request())[this] ?? PermissionStatus.denied;
 
     if (permissionStatus.isDenied) {
       _onDenied?.call();
@@ -196,6 +195,5 @@ extension PermissionListActions on List<Permission> {
   /// been granted before.
   ///
   /// Returns a [Map] containing the status per requested [Permission].
-  Future<Map<Permission, PermissionStatus>> request() =>
-      _handler.requestPermissions(this);
+  Future<Map<Permission, PermissionStatus>> request() => _handler.requestPermissions(this);
 }
